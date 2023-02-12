@@ -1,0 +1,23 @@
+const Pine = require("pine");
+
+const logger = Pine();
+
+class ApiLogger {
+  constructor() {}
+
+  info(message) {
+    logger.info(message);
+  }
+
+  info(message, data) {
+    logger.info(
+      `${message}   ${undefined != data ? JSON.stringify(data) : ""}`
+    );
+  }
+
+  error(message) {
+    logger.error(message);
+  }
+}
+
+module.exports = new ApiLogger();
