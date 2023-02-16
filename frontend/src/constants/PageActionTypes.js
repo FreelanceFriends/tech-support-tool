@@ -1,0 +1,1 @@
+export const ERROR_VALIDATION = 'ERROR_VALIDATION'
