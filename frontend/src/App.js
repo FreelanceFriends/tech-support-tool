@@ -1,9 +1,11 @@
+import React, { Component } from 'react'
 import './App.css';
+import Dashboard from './components/Dashboard';
 import Login from './components/Login';
-
-function App() {
-  return (
-    <Login/>
+export class App extends Component {
+  render() {
+    return (
+      <Login/>
 
     // if ((user.isLoginSuccess === true)) {
     //   return (
@@ -15,7 +17,8 @@ function App() {
     //     <Login/>
     //   )
     // }
-  );
+    )
+  }
 }
 
-export default App;
+export default App

@@ -1,0 +1,21 @@
+.headerDiv{
+    background-color: black;
+    color: white;
+    height: 50px;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: cursive;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.footer{
+    font-size: small;
+    padding: 10px;
+    color: white;
+    position           : fixed;
+    left               : 0;
+    bottom             : 0;
+    width              : 100%;
+    background-color   : black;
+}

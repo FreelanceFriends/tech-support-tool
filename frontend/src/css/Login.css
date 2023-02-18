@@ -38,7 +38,7 @@ body{
     right: -10px;
     bottom: -10px;
 }
-form{
+.formDiv{
     height: 300px;
     width: 280px;
     background-color: rgba(255,255,255,0.13);
@@ -52,27 +52,27 @@ form{
     box-shadow: 0 0 40px rgba(8,7,16,0.6);
     padding: 50px 35px;
 }
-form *{
+.formDiv *{
     font-family: 'Poppins',sans-serif;
     color: #ffffff;
     letter-spacing: 0.5px;
     outline: none;
     border: none;
 }
-form h3{
+.formDiv h3{
     font-size: 20px;
     font-weight: 100;
     line-height: 0px;
     text-align: center;
 }
 
-label{
+.labelDiv{
     display: block;
     margin-top: 30px;
     font-size: 16px;
     font-weight: 500;
 }
-input{
+.textbox{
     display: block;
     height: 50px;
     width: 100%;
@@ -86,11 +86,11 @@ input{
 ::placeholder{
     color: #e5e5e5;
 }
-button{
+.loginbtn{
     margin-top: 50px;
     width: 100%;
     background-color: #ffffff;
-    color: #080710;
+    color: #080710 !important;
     padding: 15px 0;
     font-size: 18px;
     font-weight: 600;
@@ -98,9 +98,9 @@ button{
     cursor: pointer;
 }
 
-button:hover{
+.loginbtn:hover{
     background-color: black;
-    color: white;
+    color: white !important;
 }
 
 .header{

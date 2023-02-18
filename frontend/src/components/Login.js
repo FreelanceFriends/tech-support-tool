@@ -24,23 +24,23 @@ class Login extends Component {
   render() {
     return (
 
-    <>
+    <div>
     <div className='header'>Help Desk Online</div>
     <div className="background">
         <div className="shape"></div>
         <div className="shape"></div>
     </div>
-    <form onSubmit={this.handleLogin}>
+    <form className="formDiv" onSubmit={this.handleLogin}>
         <h3>Login Here</h3>
 
-        <label for="username">Username</label>
+        <label className="labeldiv" for="username">Username</label>
         <input name="email"
                     placeholder="Email"
                     className="textbox"
                     value={this.state.email}
                     onChange={this.handleTextValueChange} />
 
-        <label for="password">Password</label>
+        <label className="labeldiv" for="password">Password</label>
         <input name="password"
                     type="password"
                     className="textbox"
@@ -48,9 +48,9 @@ class Login extends Component {
                     onChange={this.handleTextValueChange}
                     value={this.state.password} />
 
-        <button type="submit">Log In</button>
+        <button className="loginbtn" type="submit">Log In</button>
     </form>
-    </>
+    </div>
     )
   }
 }
