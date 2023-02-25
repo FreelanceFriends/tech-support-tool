@@ -1,19 +1,28 @@
+import { LOGIN, REGISTER_USER } from '../constants/constants';
 import * as pageTypes from '../constants/PageActionTypes'
-import axios from "axios";
+import { POST, GET, PUT, DELETE } from './ApiActions';
+import ApiExecutor from './ApiExecutor';
+
 // const serverUrl = 'http://localhost:8080';
 const serverUrl = "";
 
 export function loginUser(data) {
     return (dispatch) => {
-      axios.post(serverUrl + '/api/v1/login', data)
+      ApiExecutor(POST, LOGIN, data)
       .then(res => {
           if(res.status === 200) {
-            localStorage.setItem('token', 'Bearer ' + res.data.token)
-            localStorage.setItem('username', res.data.username)
+            let token = res.data.token
+            let {userId, email: userEmail, role: userRole} = JSON.parse(window.atob(token.split(".")[1])) 
+            
+            localStorage.setItem('user_token', res.data.token)
+            
             dispatch({
               type: pageTypes.ERROR_VALIDATION,
               payload: {
-                error: true,
+                userId,
+                userEmail,
+                userRole,
+                error: false,
                 errorMessage: "LoggedIn Successfully !!!"
               }
             })
@@ -41,13 +50,13 @@ export function loginUser(data) {
 
 export function signupuser(data) {
     return (dispatch) => {
-      axios.post(serverUrl + '/api/v1/signup', data)
+      ApiExecutor(POST, REGISTER_USER, data)
       .then(res => {
           if(res.status === 201) {
             dispatch({
-              type: pageTypes.ERROR_VALIDATION,
+              type: pageTypes.REGISTER_SUCCESS,
               payload: {
-                error: true,
+                error: false,
                 errorMessage: "User Created Successfully !!!"
               }
             })

@@ -1,4 +1,4 @@
-import { ERROR_VALIDATION } from '../constants/PageActionTypes'
+import { ERROR_VALIDATION } from '../../constants/PageActionTypes'
 const initialState = {
     error: false,
     errorMessage: ""

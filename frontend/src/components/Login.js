@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-// import {loginUser} from '../actions/index'
+import { loginUser } from '../api/api';
+loginUser
 import '../css/Login.css';
 class Login extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ class Login extends Component {
 
     handleLogin = (e) => {
         e.preventDefault();
-        console.log("state",this.state)
+        loginUser({...this.state})
     }
     handleTextValueChange = (e) => {
         this.setState({

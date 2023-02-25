@@ -1,15 +1,30 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const db = require("./db/db.config");
+const logger = require("./logger/api.logger");
 const dotenv = require("dotenv");
 const path = require("path");
 
-var app = express();
-
 dotenv.config();
+
+const userRouter = require("./router/user.router");
+const roleRouter = require("./router/role.router");
+const ticketRouter = require("./router/ticket.router");
+const { checkAuth } = require("./middleware/check-auth.middleware");
+const { validateUserSchema } = require("./middleware/validate-user-schema.middleware");
+
+const app = express();
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+
+app.use("/api/v1/user", validateUserSchema, userRouter)
+app.use("/api/v1/role", checkAuth, roleRouter)
+app.use("/api/v1/ticket", checkAuth, ticketRouter)
+
+
 
 app.get("/health", (req, res) => {
   res.send({ message: "Hello Nodejs!!" });
@@ -30,6 +45,8 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const port = process.env.APP__PORT || 8080;
+
+// self invoking function which will wait for db connection
 (async () => {
   try {
     await db.connect();
