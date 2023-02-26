@@ -11,19 +11,28 @@ class TicketRepository {
         logger.info("entering TicketRepository::createTicket")
         let ticket = await Ticket.create(payload);
         logger.info(" exitting TicketRepository::createTicket Success")
-        return ticket;
+        return ticket.populate([
+            {path: "created_by", select: "firstname lastname email -_id"},
+            {path: "assigned_to", select: "firstname lastname email -_id"}
+        ]);
     }
 
     async getTicket(filter) {
-        logger.info(`entering TicketRepository::getTicket Id: ${filter}`)
-        let ticket = await Ticket.findOne(filter);
+        logger.info(`entering TicketRepository::getTicket Id: ${JSON.stringify(filter)}`)
+        let ticket = await Ticket.findOne(filter).populate([
+            {path: "created_by", select: "firstname lastname email -_id"},
+            {path: "assigned_to", select: "firstname lastname email -_id"}
+        ]);
         logger.info(`exitting TicketRepository::getTicket Success`)
         return ticket
     }
 
     async getAllTickets(filters, sort, pageNo) {
         logger.info("entering TicketRepository::getAllTickets")
-        const tickets = await Ticket.find(filters).limit(PAGE_SIZE).skip(pageNo*PAGE_SIZE).sort(sort);
+        const tickets = await Ticket.find(filters).limit(PAGE_SIZE).skip(pageNo*PAGE_SIZE).sort(sort).populate([
+            {path: "created_by", select: "firstname lastname email -_id"},
+            {path: "assigned_to", select: "firstname lastname email -_id"}
+        ]);
         logger.info(" exitting TicketRepository::getAllTickets Success")
         return tickets;
     }
@@ -35,7 +44,10 @@ class TicketRepository {
             new: true
         })
         logger.info(`exiting TicketRepository::updateTicket Sucess! ticket - ${ticket}`)
-        return ticket;
+        return ticket.populate([
+            {path: "created_by", select: "firstname lastname email -_id"},
+            {path: "assigned_to", select: "firstname lastname email -_id"}
+        ]);
     }
 
     async deleteTicket(filter) {

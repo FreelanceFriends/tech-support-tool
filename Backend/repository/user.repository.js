@@ -37,9 +37,9 @@ class UserRepository {
         return user;
     }
 
-    async getTechnicians(id) {
-        logger.info(`entering UserRepository::getTechnicians Id: ${id}`)
-        let user = await User.findOne({_id: id}).populate([
+    async getTechnicians(role_id) {
+        logger.info(`entering UserRepository::getTechnicians Id: ${role_id}`)
+        let user = await User.findOne({role: role_id}).populate([
             {path: "role", select: "name role_id -_id"}
         ])
         logger.info(`exitting UserRepository::getTechnicians Success`)

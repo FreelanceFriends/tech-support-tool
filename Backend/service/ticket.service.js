@@ -1,5 +1,5 @@
 const logger = require("../logger/api.logger");
-const { userRoles } = require("../utils/constants");
+const { userRoles, ticketStatus } = require("../utils/constants");
 const ticketRepository = require("../repository/ticket.repository");
 const userRepository = require("../repository/user.repository");
 const { getTicketIdFilter } = require("../utils/utils");
@@ -63,6 +63,14 @@ class TicketService {
 
     async updateTicket(id, role, userId, payload) {
         logger.info(`entering TicketService::updateTicket ${id}`)
+        if(payload.assigned_to) {
+            let assignedUser = await userRepository.getUser(payload.assigned_to)
+            if(!assignedUser || assignedUser?.role?.name !== userRoles.technician) {
+                throw new Error("assigned_to user not found. Maybe not a technician !!")
+            }
+            payload.assigned_to = assignedUser
+            payload["status"] = ticketStatus.open
+        }
         let filter = getTicketIdFilter(id)
         let updatedTicket = await ticketRepository.updateTicket(filter, payload)
         logger.info(`exiting TicketService::updateTicket`)

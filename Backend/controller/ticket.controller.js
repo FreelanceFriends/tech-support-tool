@@ -1,7 +1,7 @@
 const logger = require("../logger/api.logger");
 const ticketService = require("../service/ticket.service");
 const response = require("../utils/response");
-const { userRoles, ticketSeverity, ticketStatus, TICKET_NOT_AUTH_ERROR } = require("../utils/constants");
+const { userRoles, ticketSeverity, ticketStatus, NOT_AUTH_ERROR } = require("../utils/constants");
 
 
 class TicketController {
@@ -84,20 +84,21 @@ class TicketController {
             delete payload.ticket_id
         }
         if(role === userRoles.user && payload.status) {
-            return response.error(res, 401, TICKET_NOT_AUTH_ERROR)
+            return response.error(res, 401, NOT_AUTH_ERROR)
         }
         if(role === userRoles.user && payload.severity) {
-            return response.error(res, 401, TICKET_NOT_AUTH_ERROR)
+            return response.error(res, 401, NOT_AUTH_ERROR)
         }
         if(role === userRoles.user && payload.assigned_to) {
-            return response.error(res, 401, TICKET_NOT_AUTH_ERROR)
+            return response.error(res, 401, NOT_AUTH_ERROR)
         }
         if(role === userRoles.user && payload?.comment) {
-            return response.error(res, 401, TICKET_NOT_AUTH_ERROR)
+            return response.error(res, 401, NOT_AUTH_ERROR)
         }
         if((role === userRoles.technician) && (payload.status === ticketStatus.closed) && !payload.comment) {
-            return response.err(res, 400,  "Seems like you are an Technician, Tying to close a ticket. Please provide comment")
+            return response.error(res, 400,  "Seems like you are an Technician, Tying to close a ticket. Please provide comment")
         }
+        delete payload.created_by
 
         try {
             let ticket = await ticketService.updateTicket(ticketId, role, userId, payload)

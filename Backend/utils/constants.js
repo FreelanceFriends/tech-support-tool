@@ -1,6 +1,6 @@
 const PAGE_SIZE = 25
 
-const TICKET_NOT_AUTH_ERROR = "You are not authorized to do this action"
+const NOT_AUTH_ERROR = "You are not authorized to do this action"
 
 
 const userRoles = {
@@ -24,7 +24,7 @@ const ticketStatus = {
 
 module.exports = {
     PAGE_SIZE,
-    TICKET_NOT_AUTH_ERROR,
+    NOT_AUTH_ERROR,
     userRoles,
     ticketSeverity,
     ticketStatus

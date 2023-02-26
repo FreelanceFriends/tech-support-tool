@@ -48,6 +48,9 @@ class UserService {
 
     async updateUser(id, payload) {
         logger.info(`entering UserService::updateUser ${id}`)
+        if(payload.role) {
+            payload.load = roleRepository.getRole(payload.role)
+        }
         let updatedUser = await userRepository.updateUser(id, payload)
         logger.info(`exiting UserService::updateUser`)
         return updatedUser

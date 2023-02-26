@@ -16,10 +16,11 @@ const checkAuth = (req, res, next) => {
            userId: decodedToken.userId,
            role: decodedToken.role
         };
+        console.log(req.userData)
         next();
     } catch (error) {
         logger.error(error.message)
-        return response.error(res, 401)
+        return response.error(res, 401, error.message)
     }
 };
 

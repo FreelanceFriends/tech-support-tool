@@ -13,7 +13,7 @@ class RoleRepository {
     }
 
     async getRole(name) {
-        logger.info(`entering RoleRepository::getRole Id: ${id}`)
+        logger.info(`entering RoleRepository::getRole Id: ${name}`)
         let role = await Role.findOne({name: name});
         logger.info(`exitting RoleRepository::getRole Success`)
         return role

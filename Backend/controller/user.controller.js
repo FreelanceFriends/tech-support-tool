@@ -1,5 +1,6 @@
 const logger = require("../logger/api.logger");
 const userService = require("../service/user.service");
+const { userRoles, NOT_AUTH_ERROR } = require("../utils/constants");
 const response = require("../utils/response");
 const { createJsonToken } = require("../utils/utils");
 
@@ -8,7 +9,10 @@ class UserController {
 
     async getAllUsers(req, res, next) {
         logger.info("UserController::getAllUsers")
-        console.log(req.query)
+        // users cant get user list
+        if(req.userData.role === userRoles.user) {
+            return response.error(res, 401, NOT_AUTH_ERROR)
+        }
         try {
             let users = await userService.getAllUsers()
             return response.success(res, 200, "fetch", users)
@@ -20,6 +24,10 @@ class UserController {
 
     async getTechnicians(req, res, next) {
         logger.info("UserController::getTechnicians")
+        // users cant get user list
+        if(req.userData.role === userRoles.user) {
+            return response.error(res, 401, NOT_AUTH_ERROR)
+        }
         try {
             let user = await userService.getTechnicians()
             if(!user) {
@@ -35,6 +43,9 @@ class UserController {
     async getUser(req, res, next) {
         logger.info("UserController::getUser")
         let userId = req.params.id
+        if((req.userData.role !== userRoles.admin) && userId !== req.userData.userId ) {
+            return response.error(res, 401, NOT_AUTH_ERROR)
+        }
         try {
             let user = await userService.getUser(userId)
             if(!user) {
@@ -80,8 +91,16 @@ class UserController {
         logger.info("UserController::updateUser")
         let userId = req.params.id
         let payload = req.body
+
         if(!payload || Object.keys(payload).length === 0) {
             return response.error(res, 400)
+        }
+
+        if((req.userData.role !== userRoles.admin) && userId !== req.userData.userId ) {
+            return response.error(res, 401, NOT_AUTH_ERROR)
+        }
+        if(!req.userData.role !== userRoles.admin && payload.role) {
+            return response.error(res, 401, NOT_AUTH_ERROR)
         }
         try {
             let user = await userService.updateUser(userId, payload)
@@ -98,6 +117,10 @@ class UserController {
     async deleteUser(req, res, next) {
         logger.info("UserController::deleteUser")
         let userId = req.params.id
+        // Admin or Own user only can delete their details
+        if( (req.userData.role !== userRoles.admin) && (req.userData.userId !== userId)) {
+            return response.error(res, 401, NOT_AUTH_ERROR)
+        }
         try {
             let user = await userService.deleteUser(userId)
             if(!user || user.deletedCount === 0) {
