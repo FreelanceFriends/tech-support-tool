@@ -9,14 +9,10 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-
-
-
 export class App extends Component {
   
   render() {
-    
-    console.log("App rendering")
+  
     return (
         <Routes>
           <Route path='/' element={
@@ -45,9 +41,6 @@ export class App extends Component {
 const mapStateToProps = state => ({
   user: state.user,
   page: state.page,
-  isLoginPending: state.user.isLoginPending,
-  isLoginSuccess: state.user.isLoginSuccess,
-  isLoginError: state.user.isLoginError,
 })
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({}, dispatch)

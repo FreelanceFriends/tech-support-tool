@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 
 
 app.use("/api/v1/user", validateUserSchema, userRouter)
-app.use("/api/v1/role", roleRouter)
+app.use("/api/v1/role", checkAuth,roleRouter)
 app.use("/api/v1/ticket", checkAuth, ticketRouter)
 
 

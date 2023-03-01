@@ -2,12 +2,13 @@ import { Snackbar } from '@material-ui/core';
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
-import Alert from '@material-ui/lab/Alert'
+// import Alert from '@material-ui/lab/Alert'
+import { Alert } from '@mui/material';
 import { bindActionCreators } from 'redux';
 import * as AllActions from '../api/api';
 import '../css/Login.css';
 
-class Login extends Component {
+class LoginComponent extends Component {
   
     constructor(props) {
       super(props)
@@ -22,8 +23,19 @@ class Login extends Component {
 
     handleLogin = (e) => {
         e.preventDefault();
-        console.log("sssssss",this.props)
         this?.props?.actions?.loginUser({...this.state})
+        // setTimeout(() => {
+        //   if(this.props.user.error){
+        //     this.setState({
+        //     email:"",
+        //     password: "",
+        //     alertOpen: this.props.user.error,
+        //     errorMsg: this.props.user.errorMessage
+            
+        //   })}
+        // },4000)
+        this.props.navigate("/", {replace: true})
+
     }
     handleTextValueChange = (e) => {
         this.setState({
@@ -32,8 +44,11 @@ class Login extends Component {
       }
 
     handleAlertClose = () => {
-      this.setState({ alertWarnOpen: false, alertOpen: false })
+      
+      this.setState({ alertOpen: false, errorMsg: "" })
     }
+
+    
 
   render() {
     return (
@@ -64,10 +79,10 @@ class Login extends Component {
 
         <button className="loginbtn" type="submit">Log In</button>
     </form>
-    <Snackbar open={this.state.alertOpen} autoHideDuration={6000} onClose={this.handleAlertClose} anchorOrigin={{ vertical: 'top', horizontal: "center " }} style={{ top: '87px', right: '16px' }}>
-        <Alert onClose={this.handleAlertClose} severity="warning">
+    <Snackbar open={this.state.alertOpen} autoHideDuration={2000} onClose={this.handleAlertClose} anchorOrigin={{ vertical: 'top', horizontal: "center " }} style={{ top: '87px', right: '16px' }}>
+        {/* <Alert onClose={this.handleAlertClose} severity="warning">
             {this.state.errorMsg}
-        </Alert>
+        </Alert> */}
     </Snackbar>
     </div>
     )
@@ -75,15 +90,18 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => ({
-  //...state
-  isLoginPending: state.user.isLoginPending,
-  isLoginSuccess: state.user.isLoginSuccess,
-  isLoginError: state.user.isLoginError,
+  user: state.user,
 });
 
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(AllActions, dispatch)
 });
+
+const Login = (props) => {
+  const navigate = useNavigate()
+
+  return <LoginComponent  {...props} navigate = {navigate}/>
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

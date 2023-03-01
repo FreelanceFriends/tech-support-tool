@@ -12,15 +12,12 @@ export function loginUser(data) {
     return (dispatch) => {
       ApiExecutor(POST, LOGIN, data)
       .then(res => {
-        console.log(res, typeof(res.status))
           if(res.status === 200) {
             
             let token = res.data.data.token
-            console.log(res, token)
             let {userId, email: userEmail, role: userRole} = JSON.parse(window.atob(token.split(".")[1])) 
             
             localStorage.setItem('user_token', token)
-            console.log(userId, userEmail, userRole)
             
             dispatch({
               type: pageTypes.LOGIN_SUCCESS,
