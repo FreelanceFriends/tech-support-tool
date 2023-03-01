@@ -11,7 +11,7 @@ class UserRepository {
     async createUser(payload) {
         logger.info("entering UserRepository::createUser")
         let role = await checkValidUserRole(userRoles.user)
-        if(payload.role) {
+        if(payload?.role) {
             role = await checkValidUserRole(payload.role.toUpperCase())
         }
 

@@ -4,6 +4,7 @@ const db = require("./db/db.config");
 const logger = require("./logger/api.logger");
 const dotenv = require("dotenv");
 const path = require("path");
+const cors = require("cors")
 
 dotenv.config();
 
@@ -15,15 +16,14 @@ const { validateUserSchema } = require("./middleware/validate-user-schema.middle
 
 const app = express();
 
-
+app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
 app.use("/api/v1/user", validateUserSchema, userRouter)
-app.use("/api/v1/role", checkAuth, roleRouter)
+app.use("/api/v1/role", roleRouter)
 app.use("/api/v1/ticket", checkAuth, ticketRouter)
-
 
 
 app.get("/health", (req, res) => {

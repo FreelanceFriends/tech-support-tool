@@ -5,11 +5,12 @@ const initialState = {
     userId: "",
     userEmail: "",
     error: false,
-    errorMessage: ""
+    errorMessage: "",
+    isAuthenticated: false
 };
 
 export const user = (state = initialState, action) => {
-
+    console.log(action)
     switch (action.type) {
         case LOGIN_SUCCESS:
             return {...state, ...action.payload}
