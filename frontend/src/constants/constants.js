@@ -1,5 +1,5 @@
 
-export const BASE_URL = ""
+export const BASE_URL = "/api/v1"
 
 export const LOGIN = "/user/login"
 export const GET_USER = "/user/"
