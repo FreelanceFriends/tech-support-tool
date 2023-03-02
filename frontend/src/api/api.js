@@ -1,5 +1,6 @@
-import { LOGIN, REGISTER_USER } from '../constants/constants';
+import { LOGIN, REGISTER_USER, TICKET } from '../constants/constants';
 import * as pageTypes from '../constants/PageActionTypes';
+import * as ticketTypes from '../constants/ticketActionTypes';
 import { POST } from './ApiActions';
 import ApiExecutor from './ApiExecutor';
 
@@ -23,7 +24,8 @@ export function loginUser(data, callback) {
                 userEmail,
                 userRole,
                 isAuthenticated: true,
-                error: false,
+                error: true,
+                errorType: "success",
                 errorMessage: "LoggedIn Successfully !!!"
               }
             })
@@ -35,6 +37,7 @@ export function loginUser(data, callback) {
               payload: {
                 error: true,
                 isAuthenticated: false,
+                errorType: "warning",
                 errorMessage: res.data.message
               }
             })
@@ -44,6 +47,7 @@ export function loginUser(data, callback) {
           type: pageTypes.ERROR_VALIDATION,
           payload: {
             error: true,
+            errorType: "error",
             isAuthenticated: false,
             errorMessage: err.message
           }
@@ -61,6 +65,7 @@ export function signupuser(data) {
               type: pageTypes.REGISTER_SUCCESS,
               payload: {
                 error: false,
+                errorType: "success",
                 errorMessage: "User Created Successfully !!!"
               }
             })
@@ -70,6 +75,7 @@ export function signupuser(data) {
               type: pageTypes.ERROR_VALIDATION,
               payload: {
                 error: true,
+                errorType: "warning",
                 errorMessage: res.data.message
               }
             })
@@ -79,9 +85,47 @@ export function signupuser(data) {
           type: pageTypes.ERROR_VALIDATION,
           payload: {
             error: true,
+            errorType: "error",
             errorMessage: err.message
           }
         })
       )
     }
+}
+
+
+export function createTicket(data) {
+  return (dispatch) => {
+    ApiExecutor(POST, TICKET, data).then(res => {
+      if(res.status === 201 || res.status === 200) {
+        dispatch({
+          type: ticketTypes.TICKET_CREATE_SUCCESS,
+          payload: {
+            error: true,
+            errorType: "success",
+            errorMessage: "Ticket created Successfullly!"
+          }
+        })
+      }
+      else {
+        dispatch({
+          type: ticketTypes.ERROR_VALIDATION,
+          payload: {
+            error: true,
+            errorType: "warning",
+            errorMessage: "Ticket crate failed!"
+          }
+        })
+      }
+    }).catch(err => 
+      dispatch({
+        type: ticketTypes.ERROR_VALIDATION,
+        payload: {
+          error: true,
+          errorType: "error",
+          errorMessage: err.message
+        }
+      })
+    )
+  }
 }
