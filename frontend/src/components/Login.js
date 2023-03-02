@@ -21,7 +21,7 @@ class LoginComponent extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-      if(prevProps.user.error !== this.props.user.error){
+      if(prevProps.user !== this.props.user){
         this.setState({
           ...prevState,
         alertOpen: this.props.user.error,
