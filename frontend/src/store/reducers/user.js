@@ -6,6 +6,7 @@ const initialState = {
     userEmail: "",
     error: false,
     errorMessage: "",
+    errorType: "",
     isAuthenticated: false
 };
 

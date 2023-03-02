@@ -16,6 +16,7 @@ class LoginComponent extends Component {
          email:'',
          password:'',
          alertOpen:false,
+         alertType: "info",
          errorMsg:"Invalid Creditinal"
       }
     }
@@ -25,10 +26,10 @@ class LoginComponent extends Component {
         this.setState({
           ...prevState,
         alertOpen: this.props.user.error,
+        alertType: this.props.user.errorType,
         errorMsg: this.props.user.errorMessage
       })
     }
-      console.log("Updeasdnakdnka")
     }
 
     handleLogin = (e) => {
@@ -42,7 +43,7 @@ class LoginComponent extends Component {
       }
 
     handleAlertClose = () => {
-      this.setState({ alertOpen: false, errorMsg: "" })
+      this.setState({ alertOpen: false, errorMsg: "", alertType: "" })
     }
 
     
@@ -77,7 +78,7 @@ class LoginComponent extends Component {
         <button className="loginbtn" type="submit">Log In</button>
     </form>
     <Snackbar open={this.state.alertOpen} autoHideDuration={2000} onClose={this.handleAlertClose} anchorOrigin={{ vertical: 'top', horizontal: "center" }} style={{ top: '87px', right: '16px' }}>
-        <Alert onClose={this.handleAlertClose} severity="warning">
+        <Alert onClose={this.handleAlertClose} severity={this.state.alertType}>
             {this.state.errorMsg}
         </Alert>
     </Snackbar>
