@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import '../css/Dashboard.css'
 import { AppBar, Tabs, Tab } from '@material-ui/core'
 import Creatnewticketform from './Creatnewticketform'
+import { bindActionCreators } from 'redux'
+import * as AllActions from '../api/api';
+import { connect } from 'react-redux'
 class Dashboard extends Component {
 
     constructor(props) {
@@ -39,4 +42,14 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard
+
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(AllActions, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

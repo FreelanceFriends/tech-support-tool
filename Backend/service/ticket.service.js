@@ -79,10 +79,10 @@ class TicketService {
 
     async deleteTicket(id, role, userId) {
         logger.info(`entering TicketService::deleteTicket ${id}`)
+        let filter = getTicketIdFilter(id)
         if(role === userRoles.user) {
             filter["created_by"] = Datatype.ObjectId(userId)
         }
-        let filter = getTicketIdFilter(id)
         let deletedTicket = await ticketRepository.deleteTicket(filter)
         logger.info(`exitting TicketService::deleteTicket`)
         return deletedTicket

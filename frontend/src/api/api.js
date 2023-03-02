@@ -1,13 +1,10 @@
-import axios from 'axios';
 import { LOGIN, REGISTER_USER } from '../constants/constants';
-import * as pageTypes from '../constants/PageActionTypes'
-import { POST, GET, PUT, DELETE } from './ApiActions';
+import * as pageTypes from '../constants/PageActionTypes';
+import { POST } from './ApiActions';
 import ApiExecutor from './ApiExecutor';
 
-// const serverUrl = 'http://localhost:8080';
-const serverUrl = "";
 
-export function loginUser(data) {
+export function loginUser(data, callback) {
   
     return (dispatch) => {
       ApiExecutor(POST, LOGIN, data)
@@ -30,6 +27,7 @@ export function loginUser(data) {
                 errorMessage: "LoggedIn Successfully !!!"
               }
             })
+            callback()
           }
           else {
             dispatch({
