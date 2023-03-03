@@ -8,4 +8,8 @@ export const UPDATE_USER = "/user/"
 export const DELETE_USER = "/user/"
 
 export const TICKET = "/ticket/"
+export const GET_ALL_TICKET = "/ticket/"
+export const GET_OPEN_TICKETS = "/ticket/?status=OPEN"
+export const GET_CLOSED_TICKETS = "/ticket/?status=CLOSED"
+
 
