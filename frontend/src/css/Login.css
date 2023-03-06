@@ -126,6 +126,12 @@ body{
     color: white !important;
 }
 
+.regbtn:hover{
+    background-color: black;
+    color: white !important;
+}
+
+
 .header{
     font-size: 20px;
     font-weight: 100;

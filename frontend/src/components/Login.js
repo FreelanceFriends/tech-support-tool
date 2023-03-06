@@ -13,8 +13,8 @@ class LoginComponent extends Component {
       super(props)
       
       this.state = {
-         fname:'',
-         lname:'',
+         firstname:'',
+         lastname:'',
          email:'',
          password:'',
          alertOpen:false,
@@ -96,14 +96,14 @@ class LoginComponent extends Component {
           <h3>Register Here</h3>
 
           <label className="labeldiv" >First Name</label>
-          <input name="fname"
+          <input name="firstname"
                       placeholder="First Name"
                       className="textboxreg"
                       value={this.state.fname}
                       onChange={this.handleTextValueChange} />
 
           <label className="labeldiv" >Last Name</label>
-          <input name="lname"
+          <input name="lastname"
                       placeholder="Last Name"
                       className="textboxreg"
                       onChange={this.handleTextValueChange}
