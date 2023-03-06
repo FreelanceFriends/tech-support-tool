@@ -56,7 +56,7 @@ export function loginUser(data, callback) {
     }
 }
 
-export function signupuser(data) {
+export function signupuser(data, callback) {
     return (dispatch) => {
       ApiExecutor(POST, REGISTER_USER, data)
       .then(res => {
@@ -69,6 +69,7 @@ export function signupuser(data) {
                 errorMessage: "User Created Successfully !!!"
               }
             })
+            callback();
           }
           else {
             dispatch({

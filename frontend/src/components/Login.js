@@ -19,7 +19,7 @@ class LoginComponent extends Component {
          password:'',
          alertOpen:false,
          alertType: "info",
-         errorMsg:"Invalid Creditinal",
+         errorMsg: "",
          statusLogin: true,
       }
     }
@@ -42,7 +42,7 @@ class LoginComponent extends Component {
 
     handleRegister = (e) => {
       e.preventDefault();
-      // this?.props?.actions?.createUser({...this.state}, () => this.props.navigate("/", {replace: true}))
+      this?.props?.actions?.signupuser({...this.state}, () => this.props.navigate("/login", {replace: true}))
       console.log(this.state);
   }
     handleTextValueChange = (e) => {
