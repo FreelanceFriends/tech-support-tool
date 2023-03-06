@@ -52,6 +52,7 @@ body{
     box-shadow: 0 0 40px rgba(8,7,16,0.6);
     padding: 50px 35px;
 }
+
 .formDiv *{
     font-family: 'Poppins',sans-serif;
     color: #ffffff;
@@ -60,6 +61,7 @@ body{
     border: none;
 }
 .formDiv h3{
+    margin-top: -20px;
     font-size: 20px;
     font-weight: 100;
     line-height: 0px;
@@ -83,6 +85,17 @@ body{
     font-size: 14px;
     font-weight: 300;
 }
+.textboxreg{
+    display: block;
+    height: 30px;
+    width: 100%;
+    background-color: rgba(255,255,255,0.07);
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 3px;
+    font-size: 10px;
+    font-weight: 200;
+}
 ::placeholder{
     color: #e5e5e5;
 }
@@ -97,11 +110,27 @@ body{
     border-radius: 5px;
     cursor: pointer;
 }
-
+.regbtn{
+    margin-top: 40px;
+    width: 100%;
+    background-color: #ffffff;
+    color: #080710 !important;
+    padding: 10px 0;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+}
 .loginbtn:hover{
     background-color: black;
     color: white !important;
 }
+
+.regbtn:hover{
+    background-color: black;
+    color: white !important;
+}
+
 
 .header{
     font-size: 20px;

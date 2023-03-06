@@ -30,7 +30,7 @@ const ProtectedRoute = ({children}) => {
     }
     
 
-    if(!user?.isAuthenticated && !token) {
+    if((!user?.isAuthenticated && !token) || ((decodedJWT?.exp*1000) < Date.now())) {
         
         return <Navigate to="/login" state={{ from: location}} replace />
     }

@@ -13,10 +13,14 @@ class LoginComponent extends Component {
       super(props)
       
       this.state = {
+         firstname:'',
+         lastname:'',
          email:'',
          password:'',
          alertOpen:false,
-         errorMsg:"Invalid Creditinal"
+         alertType: "info",
+         errorMsg: "",
+         statusLogin: true,
       }
     }
 
@@ -25,16 +29,22 @@ class LoginComponent extends Component {
         this.setState({
           ...prevState,
         alertOpen: this.props.user.error,
+        alertType: this.props.user.errorType,
         errorMsg: this.props.user.errorMessage
       })
     }
-      console.log("Updeasdnakdnka")
     }
 
     handleLogin = (e) => {
         e.preventDefault();
         this?.props?.actions?.loginUser({...this.state}, () => this.props.navigate("/", {replace: true}))
     }
+
+    handleRegister = (e) => {
+      e.preventDefault();
+      this?.props?.actions?.signupuser({...this.state}, () => this.props.navigate("/login", {replace: true}))
+      console.log(this.state);
+  }
     handleTextValueChange = (e) => {
         this.setState({
             [e.target.name] : e.target.value
@@ -42,7 +52,10 @@ class LoginComponent extends Component {
       }
 
     handleAlertClose = () => {
-      this.setState({ alertOpen: false, errorMsg: "" })
+      this.setState({ alertOpen: false, errorMsg: "", alertType: "" })
+    }
+    statusLogin =()=>{
+      this.setState({ statusLogin:!this.state.statusLogin })
     }
 
     
@@ -56,28 +69,66 @@ class LoginComponent extends Component {
         <div className="shape"></div>
         <div className="shape"></div>
     </div>
-    <form className="formDiv" onSubmit={this.handleLogin}>
+        {this.state.statusLogin === true ?
+        <form className="formDiv" onSubmit={this.handleLogin}>
         <h3>Login Here</h3>
 
-        <label className="labeldiv" htmlFor="username">Username</label>
-        <input name="email"
-                    placeholder="Email"
-                    className="textbox"
-                    value={this.state.email}
-                    onChange={this.handleTextValueChange} />
+          <label className="labeldiv" htmlFor="username">Username</label>
+          <input name="email"
+                      placeholder="Email"
+                      className="textbox"
+                      value={this.state.email}
+                      onChange={this.handleTextValueChange} />
 
-        <label className="labeldiv" htmlFor="password">Password</label>
-        <input name="password"
-                    type="password"
-                    className="textbox"
-                    placeholder="Password"
-                    onChange={this.handleTextValueChange}
-                    value={this.state.password} />
+          <label className="labeldiv" htmlFor="password">Password</label>
+          <input name="password"
+                      type="password"
+                      className="textbox"
+                      placeholder="Password"
+                      onChange={this.handleTextValueChange}
+                      value={this.state.password} />
 
-        <button className="loginbtn" type="submit">Log In</button>
-    </form>
+          <button className="loginbtn" type="submit">Log In</button> 
+          <br/>
+         <p>Don't have an account? <span style={{"text-decoration-line": "underline"}}onClick={this.statusLogin}>Register</span></p>
+        </form>:
+        <form className="formDiv" onSubmit={this.handleRegister}>
+          <h3>Register Here</h3>
+
+          <label className="labeldiv" >First Name</label>
+          <input name="firstname"
+                      placeholder="First Name"
+                      className="textboxreg"
+                      value={this.state.fname}
+                      onChange={this.handleTextValueChange} />
+
+          <label className="labeldiv" >Last Name</label>
+          <input name="lastname"
+                      placeholder="Last Name"
+                      className="textboxreg"
+                      onChange={this.handleTextValueChange}
+                      value={this.state.lname} />
+          <label className="labeldiv" >Email</label>
+          <input name="email"
+                      placeholder="Email"
+                      className="textboxreg"
+                      onChange={this.handleTextValueChange}
+                      value={this.state.email} />
+          <label className="labeldiv" >Password</label>
+          <input name="password"
+                      placeholder="Password"
+                      type="password"
+                      className="textboxreg"
+                      onChange={this.handleTextValueChange}
+                      value={this.state.password} />
+
+          <button className="regbtn" type="submit">Register</button><br/>
+         <p>Already have an account? <span style={{"text-decoration-line": "underline"}} onClick={this.statusLogin}>Login</span></p>
+        </form>
+        }
+    
     <Snackbar open={this.state.alertOpen} autoHideDuration={2000} onClose={this.handleAlertClose} anchorOrigin={{ vertical: 'top', horizontal: "center" }} style={{ top: '87px', right: '16px' }}>
-        <Alert onClose={this.handleAlertClose} severity="warning">
+        <Alert onClose={this.handleAlertClose} severity={this.state.alertType}>
             {this.state.errorMsg}
         </Alert>
     </Snackbar>

@@ -12,7 +12,7 @@ class TicketService {
         logger.info("entering TicketService::getAllTickets")
         let filters = {}
         let pageNo = 0
-        let sort = queryParams.sort ? queryParams.sort : undefined 
+        let sort = queryParams.sort ? queryParams.sort : {"createdAt": -1} 
         if(queryParams.page) {
             pageNo = Math.max(0, queryParams?.page);
         } 
