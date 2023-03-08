@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import * as AllActions from '../api/api';
 import { connect } from 'react-redux'
 import { GET_ALL_TICKET } from '../constants/constants'
+import DisplayTickets from './DisplayTickets'
 class Dashboard extends Component {
 
     constructor(props) {
@@ -13,6 +14,7 @@ class Dashboard extends Component {
     
       this.state = {
         value_menu:0,
+        openTickets:'',
       }
     }
     componentDidMount() {
@@ -59,7 +61,7 @@ class Dashboard extends Component {
     };
 
   render() {
-    
+    // console.log("tickets",this.props.ticket.tickets);
     return (
     <>
         <div className='headerDiv'>Help Desk Online</div>
@@ -71,6 +73,8 @@ class Dashboard extends Component {
             </Tabs>
         </AppBar>
         {this.state.value_menu ===0 && <Creatnewticketform/>}
+        {this.state.value_menu ===1 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"open"}/>}
+        {this.state.value_menu ===2 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"closed"}/>}
         <div className='footer'>© 2023 copyright by Help Desk Team</div>
     </>
 

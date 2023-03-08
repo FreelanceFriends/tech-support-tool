@@ -5,6 +5,7 @@ import * as AllActions from '../api/api';
 import { bindActionCreators } from 'redux';
 import '../css/Createticket.css'
 import { connect } from 'react-redux';
+import { GET_ALL_TICKET } from '../constants/constants'
 export class Creatnewticketform extends Component {
     constructor(props) {
       super(props)
@@ -29,6 +30,10 @@ export class Creatnewticketform extends Component {
           alertType: this.props.ticket.errorType,
         })
       }
+    }
+
+    componentDidMount =() =>{
+      this.props.actions.getTickets(GET_ALL_TICKET)
     }
 
     handleTextValueChange = (e) => {
@@ -57,7 +62,7 @@ export class Creatnewticketform extends Component {
                 <div className='from-display'>
                 <div className='label-display'>
                 <label className="ticket-lablel"><strong>Title</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="text" name='title' value={this.state.title} onChange={this.handleTextValueChange} />
+                <input type="text" className="ticket-tt" name='title' value={this.state.title} onChange={this.handleTextValueChange} />
                 </div>
                 <div className='label-display'>
                 <label className="ticket-lablel"><strong>Description</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;

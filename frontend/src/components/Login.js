@@ -37,7 +37,7 @@ class LoginComponent extends Component {
 
     handleLogin = (e) => {
         e.preventDefault();
-        this?.props?.actions?.loginUser({...this.state}, () => this.props.navigate("/", {replace: true}))
+        this?.props?.actions?.loginUser({email:this.state.email, password:this.state.password}, () => this.props.navigate("/", {replace: true}))
     }
 
     handleRegister = (e) => {
