@@ -67,14 +67,19 @@ class Dashboard extends Component {
         <div className='headerDiv'>Help Desk Online</div>
         <AppBar position="static" color="default" >
             <Tabs value={this.state.value_menu} onChange={this.handleChangeSubTab}>
-                <Tab label="Create" />
+           { this.props.user.userRole ==="USER" && <Tab label="Create" />}
                 <Tab label="Open" />
                 <Tab label="Closed" />
             </Tabs>
         </AppBar>
-        {this.state.value_menu ===0 && <Creatnewticketform/>}
+        {this.props.user.userRole === "USER" ?
+        (<>{(this.state.value_menu ===0) && <Creatnewticketform/>}
         {this.state.value_menu ===1 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"open"}/>}
-        {this.state.value_menu ===2 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"closed"}/>}
+        {this.state.value_menu ===2 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"closed"}/>}</>):
+        
+        (<>{this.state.value_menu ===0 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"open"}/>}
+        {this.state.value_menu ===1 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"closed"}/>}</>)
+        }
         <div className='footer'>© 2023 copyright by Help Desk Team</div>
     </>
 

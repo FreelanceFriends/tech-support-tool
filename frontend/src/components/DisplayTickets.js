@@ -12,6 +12,7 @@ class DisplayTickets extends Component {
     
       this.state = {
         modalOpen:false,
+        ticket_details:'',
         comments:'',
         tickets:[],
       }
@@ -21,7 +22,7 @@ class DisplayTickets extends Component {
       if(this.props.tickets !== null){
         if(this.props.status === "open"){
           tickets = this.props.tickets.filter(function (ticket) {
-              return ticket.status === "NEW";
+              return ticket.status === "OPEN";
           })
         }
         else{
@@ -32,11 +33,6 @@ class DisplayTickets extends Component {
       }
       this.setState({
         tickets:tickets
-      })
-    }
-    handleResolve=()=>{
-      this.setState({
-        modalOpen:true,
       })
     }
 
@@ -52,25 +48,26 @@ class DisplayTickets extends Component {
       })
     }
     handleSubmit =(e) =>{
-      console.log(this.state.comments);
+      console.log(this.state);
+      // Action to close the ticket
       this.setState({
-        modalOpen:true,
+        modalOpen:false,
       })
     }
  
   render() {
     return (
         <>
-          { this.state.tickets.length !== 0 ? this.state.tickets.map( e =>
+          { this.state.tickets.length !== 0 ? this.state.tickets.map( k =>
             <div className="card">
                 <div className="container">
-                <h4><b>Title: {e.title}</b></h4> 
-                <p>Description: {e.description}</p> 
-                <p>Severity: {e.severity}</p> 
-                <p>Created At: {e.createdAt.slice(0, 10)}</p> 
-                <p>Assigned To: {e.assignedTo != null ? e.assignedTo : "Not Yet Assigned"}</p> 
-                {e.status === "CLOSED" && <p>Comments: {e.comments}</p> }
-                {this.props.user.userRole === "USER" && <button className='resolvebtn' onClick={this.handleResolve}>Resolve Ticket</button>}
+                <h4><b>Title: {k.title}</b></h4> 
+                <p>Description: {k.description}</p> 
+                <p>Severity: {k.severity}</p> 
+                <p>Created At: {k.createdAt.slice(0, 10)}</p> 
+                <p>Assigned To: {k.assigned_to.email != null ? k.assigned_to.email : "Not Yet Assigned"}</p> 
+                {k.status === "CLOSED" && <p>Comments: {k.comments}</p> }
+                {this.props.user.userRole === "TECHNICIAN" && <button className='resolvebtn' onClick={ e =>{ this.setState({modalOpen:true,ticket_details:k})}}>Resolve Ticket</button>}
                 </div>
             </div>):<div>Loading ... </div>
           }
