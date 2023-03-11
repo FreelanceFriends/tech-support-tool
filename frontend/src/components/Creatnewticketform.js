@@ -5,7 +5,6 @@ import * as AllActions from '../api/api';
 import { bindActionCreators } from 'redux';
 import '../css/Createticket.css'
 import { connect } from 'react-redux';
-import { GET_ALL_TICKET } from '../constants/constants'
 export class Creatnewticketform extends Component {
     constructor(props) {
       super(props)
@@ -32,9 +31,9 @@ export class Creatnewticketform extends Component {
       }
     }
 
-    componentDidMount =() =>{
-      this.props.actions.getTickets(GET_ALL_TICKET)
-    }
+    // componentDidMount =() =>{
+    //   this.props.actions.getTickets(GET_ALL_TICKET)
+    // }
 
     handleTextValueChange = (e) => {
         this.setState({

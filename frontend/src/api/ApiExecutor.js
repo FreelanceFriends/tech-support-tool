@@ -3,7 +3,7 @@ import axios from "axios";
 import * as apiActions from "./ApiActions";
 import { BASE_URL } from "../constants/constants"; 
 
-export const instance = axios.create({
+export const instancee = () => axios.create({
   baseURL: BASE_URL,
   timeout: 5000,
   headers: {
@@ -15,7 +15,9 @@ export const instance = axios.create({
   },
 });
 
-instance.interceptors.response.use(
+// eslint-disable-next-line
+const applyInterceptor = (instance) => 
+ instance.interceptors.response.use(
   (response) => {
     return response;
   },
@@ -36,6 +38,8 @@ instance.interceptors.response.use(
 
 export default async function ApiExecutor(action, url, data = {}) {
   let response = {};
+  let instance = instancee();
+  // applyInterceptor(instance)
   switch (action) {
     case apiActions.GET:
       response = await instance.get(url);

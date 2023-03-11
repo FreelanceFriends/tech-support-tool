@@ -7,6 +7,8 @@ import * as AllActions from '../api/api';
 import { connect } from 'react-redux'
 import { GET_ALL_TICKET } from '../constants/constants'
 import DisplayTickets from './DisplayTickets'
+import Alert from '@mui/material/Alert';
+import { Snackbar } from '@material-ui/core';
 class Dashboard extends Component {
 
     constructor(props) {
@@ -15,6 +17,9 @@ class Dashboard extends Component {
       this.state = {
         value_menu:0,
         openTickets:'',
+        alertOpen: false,
+         errorMsg: "",
+         alertType: "info"
       }
     }
     componentDidMount() {
@@ -52,6 +57,13 @@ class Dashboard extends Component {
     componentDidUpdate(prevProps, prevState) {
       if(this.props.ticket !== prevProps.ticket) {
         // Here you go for update current component state
+        // this.props.actions.getTickets(GET_ALL_TICKET)
+        this.setState({
+          ...prevState,
+            alertOpen: this.props.ticket.error,
+            alertType: this.props.ticket.errorType,
+            errorMsg: this.props.ticket.errorMessage
+          })
         console.log("Dashboard tickets ", this.props.ticket.tickets)
       }
     }
@@ -59,6 +71,12 @@ class Dashboard extends Component {
     handleChangeSubTab = (event, value_menu) => {
         this.setState({ value_menu });
     };
+
+
+    handleAlertClose = () => {
+      this.setState({ alertOpen: false, errorMsg: "", alertType: "info" })
+    }
+
 
   render() {
     // console.log("tickets",this.props.ticket.tickets);
@@ -76,6 +94,11 @@ class Dashboard extends Component {
         {this.state.value_menu ===1 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"open"}/>}
         {this.state.value_menu ===2 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"closed"}/>}
         <div className='footer'>© 2023 copyright by Help Desk Team</div>
+        <Snackbar open={this.state.alertOpen} autoHideDuration={2000} onClose={this.handleAlertClose} anchorOrigin={{ vertical: 'top', horizontal: "center" }} style={{ top: '87px', right: '16px' }}>
+        <Alert onClose={this.handleAlertClose} severity={this.state.alertType}>
+            {this.state.errorMsg}
+        </Alert>
+    </Snackbar>
     </>
 
     )
