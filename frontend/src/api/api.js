@@ -251,3 +251,12 @@ export function deleteTicket(ticketId) {
     )
   }
 }
+
+
+export function logoutuser(callback) {
+  
+  return (dispatch) => {
+    localStorage.clear()
+    callback()
+  }
+}
