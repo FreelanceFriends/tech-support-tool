@@ -31,6 +31,10 @@ export class Creatnewticketform extends Component {
       }
     }
 
+    // componentDidMount =() =>{
+    //   this.props.actions.getTickets(GET_ALL_TICKET)
+    // }
+
     handleTextValueChange = (e) => {
         this.setState({
           [e.target.name]: e.target.value
@@ -57,7 +61,7 @@ export class Creatnewticketform extends Component {
                 <div className='from-display'>
                 <div className='label-display'>
                 <label className="ticket-lablel"><strong>Title</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="text" name='title' value={this.state.title} onChange={this.handleTextValueChange} />
+                <input type="text" className="ticket-tt" name='title' value={this.state.title} onChange={this.handleTextValueChange} />
                 </div>
                 <div className='label-display'>
                 <label className="ticket-lablel"><strong>Description</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;

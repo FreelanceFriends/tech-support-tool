@@ -13,9 +13,11 @@ export function loginUser(data, callback) {
           if(res.status === 200) {
             
             let token = res.data.data.token
+            localStorage.setItem('user_token', token)
+
             let {userId, email: userEmail, role: userRole} = JSON.parse(window.atob(token.split(".")[1])) 
             
-            localStorage.setItem('user_token', token)
+            
             
             dispatch({
               type: pageTypes.LOGIN_SUCCESS,
@@ -94,7 +96,6 @@ export function signupuser(data, callback) {
     }
 }
 
-
 // Ticket actions
 export function createTicket(data) {
   return (dispatch) => {
@@ -108,6 +109,7 @@ export function createTicket(data) {
             errorMessage: "Ticket created Successfullly!"
           }
         })
+        dispatch(getTickets(TICKET));
       }
       else {
         dispatch({

@@ -37,7 +37,7 @@ class LoginComponent extends Component {
 
     handleLogin = (e) => {
         e.preventDefault();
-        this?.props?.actions?.loginUser({...this.state}, () => this.props.navigate("/", {replace: true}))
+        this?.props?.actions?.loginUser({email:this.state.email, password:this.state.password}, () => this.props.navigate("/", {replace: true}))
     }
 
     handleRegister = (e) => {
@@ -90,7 +90,7 @@ class LoginComponent extends Component {
 
           <button className="loginbtn" type="submit">Log In</button> 
           <br/>
-         <p>Don't have an account? <span style={{"text-decoration-line": "underline"}}onClick={this.statusLogin}>Register</span></p>
+         <p>Don't have an account? <span style={{"textDecorationLine": "underline"}}onClick={this.statusLogin}>Register</span></p>
         </form>:
         <form className="formDiv" onSubmit={this.handleRegister}>
           <h3>Register Here</h3>
@@ -123,7 +123,7 @@ class LoginComponent extends Component {
                       value={this.state.password} />
 
           <button className="regbtn" type="submit">Register</button><br/>
-         <p>Already have an account? <span style={{"text-decoration-line": "underline"}} onClick={this.statusLogin}>Login</span></p>
+         <p>Already have an account? <span style={{"textDecorationLine": "underline"}} onClick={this.statusLogin}>Login</span></p>
         </form>
         }
     
