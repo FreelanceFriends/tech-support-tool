@@ -5,11 +5,14 @@ import Creatnewticketform from './Creatnewticketform'
 import { bindActionCreators } from 'redux'
 import * as AllActions from '../api/api';
 import { connect } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 import { GET_ALL_TICKET } from '../constants/constants'
 import DisplayTickets from './DisplayTickets'
 import Alert from '@mui/material/Alert';
 import { Snackbar } from '@material-ui/core';
-class Dashboard extends Component {
+import LogoutIcon from '@mui/icons-material/Logout';
+// import BASE_URL from '../constants'
+class Dashboardcomp extends Component {
 
     constructor(props) {
       super(props)
@@ -76,27 +79,33 @@ class Dashboard extends Component {
     handleAlertClose = () => {
       this.setState({ alertOpen: false, errorMsg: "", alertType: "info" })
     }
-
+    handleLogout=()=>{
+      this?.props?.actions?.logoutuser(() => this.props.navigate("/login", {replace: true}))
+      // this.props.navigate("/login", {replace: true})
+    }
 
   render() {
     // console.log("tickets",this.props.ticket.tickets);
     return (
     <>
-        <div className='headerDiv'>Help Desk Online</div>
+        <div className='headerDiv'><span style={{marginLeft:'500px'}}>Help Desk Online</span><LogoutIcon onClick={this.handleLogout} style={{marginLeft:'500px'}}/></div>
         <AppBar position="static" color="default" >
             <Tabs value={this.state.value_menu} onChange={this.handleChangeSubTab}>
            { this.props.user.userRole ==="USER" && <Tab label="Create" />}
+                <Tab label="New" />
                 <Tab label="Open" />
                 <Tab label="Closed" />
             </Tabs>
         </AppBar>
         {this.props.user.userRole === "USER" ?
         (<>{(this.state.value_menu ===0) && <Creatnewticketform/>}
-        {this.state.value_menu ===1 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"open"}/>}
-        {this.state.value_menu ===2 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"closed"}/>}</>):
+        {this.state.value_menu ===1 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"new"}/>}
+        {this.state.value_menu ===2 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"open"}/>}
+        {this.state.value_menu ===3 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"closed"}/>}</>):
         
-        (<>{this.state.value_menu ===0 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"open"}/>}
-        {this.state.value_menu ===1 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"closed"}/>}</>)
+        (<>{this.state.value_menu ===0 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"new"}/>}
+        {this.state.value_menu ===1 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"open"}/>}
+        {this.state.value_menu ===2 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"closed"}/>}</>)
         }
         <div className='footer'>© 2023 copyright by Help Desk Team</div>
         <Snackbar open={this.state.alertOpen} autoHideDuration={2000} onClose={this.handleAlertClose} anchorOrigin={{ vertical: 'top', horizontal: "center" }} style={{ top: '87px', right: '16px' }}>
@@ -116,9 +125,14 @@ const mapStateToProps = state => ({
   ticket: state.ticket
 });
 
-
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(AllActions, dispatch)
 });
 
+const Dashboard = (props) => {
+  const navigate = useNavigate()
+  
+
+  return <Dashboardcomp  {...props} navigate = {navigate}/>
+}
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

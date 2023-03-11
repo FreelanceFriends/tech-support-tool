@@ -22,9 +22,13 @@ class DisplayTickets extends Component {
     componentDidMount =()=>{
       var tickets=[];
       if(this.props.tickets !== null){
-        if(this.props.status === "open"){
+        if(this.props.status === "new"){
           tickets = this.props.tickets.filter(function (ticket) {
               return ticket.status === "NEW";
+          })
+        }else if(this.props.status === "open"){
+          tickets = this.props.tickets.filter(function (ticket) {
+              return ticket.status === "OPEN";
           })
         }
         else{
@@ -44,6 +48,16 @@ class DisplayTickets extends Component {
           ...prevState,
         modalOpen:true,
         selectedTicket: index
+        }
+      })
+    }
+
+    handleAssign=(index)=>{
+      this.setState(prevState => {
+        return {
+          ...prevState,
+        modalOpen:true,
+        // selectedTicket: index
         }
       })
     }
@@ -83,11 +97,12 @@ class DisplayTickets extends Component {
                 <p>Description: {e.description}</p> 
                 <p>Severity: {e.severity}</p> 
                 <p>Created At: {e.createdAt.slice(0, 10)}</p> 
-                <p>Assigned To: {e.assignedTo != null ? e.assignedTo : "Not Yet Assigned"}</p> 
-                {e.status === "CLOSED" && <p>Comments: {e.comments}</p> }
-                {this.props.user.userRole === "TECHNICIAN" && <button className='resolvebtn' onClick={()=>this.handleResolve(index)}>Resolve Ticket</button>}
+                <p>Assigned To: {e.assigned_to?.email != null ? e.assigned_to.email : "Not Yet Assigned"}</p> 
+                {e.status === "CLOSED" && <p>Comments: {e.comment}</p> }
+                {(this.props.user.userRole === "TECHNICIAN" && this.props.status === "open") && <button className='resolvebtn' onClick={()=>this.handleResolve(index)}>Resolve Ticket</button>}
+                {(this.props.user.userRole === "TECHNICIAN" && this.props.status === "new") && <button className='resolvebtn' onClick={()=>this.handleAssign(index)}>Assign Me</button>}
                 </div>
-            </div>):<div>Loading ... </div>
+            </div>):<div style={{marginLeft:'45%', marginTop:'50px'}}>No Tickets Found. </div>
           }
                 <Dialog open={this.state.modalOpen}>
                         <DialogTitle className="dialogTitle">
