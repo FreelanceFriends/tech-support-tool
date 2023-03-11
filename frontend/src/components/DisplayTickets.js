@@ -85,7 +85,7 @@ class DisplayTickets extends Component {
                 <p>Created At: {e.createdAt.slice(0, 10)}</p> 
                 <p>Assigned To: {e.assignedTo != null ? e.assignedTo : "Not Yet Assigned"}</p> 
                 {e.status === "CLOSED" && <p>Comments: {e.comments}</p> }
-                {this.props.user.userRole === "USER" && <button className='resolvebtn' onClick={()=>this.handleResolve(index)}>Resolve Ticket</button>}
+                {this.props.user.userRole === "TECHNICIAN" && <button className='resolvebtn' onClick={()=>this.handleResolve(index)}>Resolve Ticket</button>}
                 </div>
             </div>):<div>Loading ... </div>
           }
