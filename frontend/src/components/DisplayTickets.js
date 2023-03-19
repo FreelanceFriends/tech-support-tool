@@ -16,7 +16,9 @@ class DisplayTickets extends Component {
         selectedTicket: '',
         alertOpen: false,
          errorMsg: "",
-         alertType: "info"
+         alertType: "info",
+         btnstatus:'',
+         technicianname:''
       }
     }
     componentDidMount =()=>{
@@ -47,7 +49,8 @@ class DisplayTickets extends Component {
         return {
           ...prevState,
         modalOpen:true,
-        selectedTicket: index
+        selectedTicket: index,
+        btnstatus:'resolved'
         }
       })
     }
@@ -62,6 +65,17 @@ class DisplayTickets extends Component {
       })
     }
 
+    handleAssignTo=(index)=>{
+      this.setState(prevState => {
+        return {
+          ...prevState,
+        modalOpen:true,
+        selectedTicket: index,
+        btnstatus:'assignto'
+        }
+      })
+    }
+
     handleTextValueChange = (e) => {
       this.setState({
         [e.target.name]: e.target.value
@@ -72,7 +86,8 @@ class DisplayTickets extends Component {
       this.setState({
         modalOpen:false,
         comments: '',
-        selectedTicket: ''
+        selectedTicket: '',
+        technicianname:''
       })
     }
     handleSubmit =(e) =>{
@@ -85,6 +100,10 @@ class DisplayTickets extends Component {
         comments: '',
         selectedTicket: ''
       })
+    }
+
+    handleAssignSubmit  =(e) =>{
+      console.log("state",this.state)
     }
  
   render() {
@@ -100,19 +119,33 @@ class DisplayTickets extends Component {
                 <p>Assigned To: {e.assigned_to?.email != null ? e.assigned_to.email : "Not Yet Assigned"}</p> 
                 {e.status === "CLOSED" && <p>Comments: {e.comment}</p> }
                 {(this.props.user.userRole === "TECHNICIAN" && this.props.status === "open") && <button className='resolvebtn' onClick={()=>this.handleResolve(index)}>Resolve Ticket</button>}
-                {(this.props.user.userRole === "TECHNICIAN" && this.props.status === "new") && <button className='resolvebtn' onClick={()=>this.handleAssign(index)}>Assign Me</button>}
+                {/* {(this.props.user.userRole === "TECHNICIAN" && this.props.status === "new") && <button className='resolvebtn' onClick={()=>this.handleAssign(index)}>Assign Me</button>} */}
+                {(this.props.user.userRole === "ADMIN" && this.props.status === "new") && <button className='resolvebtn' onClick={()=>this.handleAssignTo(index)}>Assign To</button>}
                 </div>
             </div>):<div style={{marginLeft:'45%', marginTop:'50px'}}>No Tickets Found. </div>
           }
                 <Dialog open={this.state.modalOpen}>
-                        <DialogTitle className="dialogTitle">
+                       { this.state.btnstatus === "resolved" ?( <><DialogTitle className="dialogTitle">
                             <span><strong> Comments </strong></span>
                         </DialogTitle>
                         <DialogContent dividers>
                             <textarea name='comments' value={this.state.comments} onChange={this.handleTextValueChange} rows="4" cols="50"></textarea><br/><br/>
                             <button className='cmtbtn' onClick={this.handleSubmit}>Resolve</button> &nbsp;&nbsp;
                             <button className='cmtbtn' onClick={this.handleClose}>Close</button>
-                        </DialogContent>
+                        </DialogContent></>):
+                        ( <><DialogTitle className="dialogTitle">
+                        <span><strong> Assign TO </strong></span>
+                    </DialogTitle>
+                    <DialogContent dividers>
+                    <label className="ticket-lablel"><strong>Technician name</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <select className="ticket-dd" name='technicianname' value={this.state.technicianname} onChange={this.handleTextValueChange}> 
+                          <option value="messi">messi</option>
+                          <option value="hedward">hedward</option>
+                          <option value="johnson">johnson</option>
+                      </select> <br/><br/>
+                        <button className='cmtbtn' onClick={this.handleAssignSubmit}>Assign</button> &nbsp;&nbsp;
+                        <button className='cmtbtn' onClick={this.handleClose}>Close</button>
+                    </DialogContent></>)}
                     </Dialog>
         </>
     )
