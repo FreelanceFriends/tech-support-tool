@@ -5,7 +5,8 @@ import * as AllActions from '../api/api';
 import { bindActionCreators } from 'redux';
 import '../css/Createticket.css'
 import { connect } from 'react-redux';
-export class Creatnewticketform extends Component {
+import { useNavigate } from 'react-router-dom';
+export class CreatnewticketformComp extends Component {
     constructor(props) {
       super(props)
     
@@ -25,6 +26,7 @@ export class Creatnewticketform extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+
       if(prevProps.ticket !== this.props.ticket) {
         console.log(this.props.ticket)
         this.setState({
@@ -36,9 +38,10 @@ export class Creatnewticketform extends Component {
       }
     }
 
-    // componentDidMount =() =>{
-    //   this.props.actions.getTickets(GET_ALL_TICKET)
-    // }
+    componentDidMount =() =>{
+      // this.props.actions.getTickets(GET_ALL_TICKET)
+      console.log("Sate ", this.state)
+    }
 
     handleTextValueChange = (e) => {
         this.setState({
@@ -52,7 +55,14 @@ export class Creatnewticketform extends Component {
         this.props.actions.createTicket({title: this.state.title, description: this.state.description, severity: this.state?.severity?.toLocaleUpperCase})
         }
         else{
-        this?.props?.actions?.signupuser({...this.state}, () => this.props.navigate("/login", {replace: true}))
+        this?.props?.actions?.signupuser({...this.state}, () => this.props.navigate("/", {replace: true}))
+        this.setState({
+          firstname:'',
+         lastname:'',
+         email:'',
+         password:'',
+         role:'User',
+        })
         }
 
       }
@@ -143,5 +153,12 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(AllActions, dispatch)
 });
+
+const Creatnewticketform = (props) => {
+  const navigate = useNavigate()
+  
+
+  return <CreatnewticketformComp  {...props} navigate = {navigate}/>
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Creatnewticketform);

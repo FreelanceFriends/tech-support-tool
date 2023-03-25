@@ -18,7 +18,8 @@ class DisplayTickets extends Component {
          errorMsg: "",
          alertType: "info",
          btnstatus:'',
-         technicianname:''
+         technicianname: '',
+         technicianList: [],
       }
     }
     componentDidMount =()=>{
@@ -44,6 +45,20 @@ class DisplayTickets extends Component {
       })
     }
 
+    componentDidUpdate(prevProps, prevState) {
+      if(this.props.user !== prevProps.user) {
+        // Here you go for update current component state
+        // this.props.actions.getTickets(GET_ALL_TICKET)
+        this.setState({
+          ...prevState,
+            alertOpen: this.props.ticket.error,
+            alertType: this.props.ticket.errorType,
+            errorMsg: this.props.ticket.errorMessage,
+            technicianList: this.props.user.technicians
+          })
+      }
+    }
+
     handleResolve=(index)=>{
       this.setState(prevState => {
         return {
@@ -66,6 +81,7 @@ class DisplayTickets extends Component {
     }
 
     handleAssignTo=(index)=>{
+      this.props?.actions?.getTechnicians()
       this.setState(prevState => {
         return {
           ...prevState,
@@ -103,7 +119,23 @@ class DisplayTickets extends Component {
     }
 
     handleAssignSubmit  =(e) =>{
-      console.log("state",this.state)
+      let selectedTicket = this.state.tickets[this.state.selectedTicket];
+      let updateObj = {assigned_to: this.state.technicianname}
+      this.props.actions.updateTicket(updateObj, selectedTicket["_id"] )
+
+      this.setState({
+        modalOpen:false,
+        comments: '',
+        selectedTicket: '',
+        technicianname:''
+      })
+    }
+
+    getOption = () => {
+      let options = this.state.technicianList.map(technician => 
+        <option value={technician?._id}>{`${technician.firstname} ${technician.lastname}`}</option>
+      )
+      return options;
     }
  
   render() {
@@ -139,9 +171,12 @@ class DisplayTickets extends Component {
                     <DialogContent dividers>
                     <label className="ticket-lablel"><strong>Technician name</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <select className="ticket-dd" name='technicianname' value={this.state.technicianname} onChange={this.handleTextValueChange}> 
-                          <option value="messi">messi</option>
-                          <option value="hedward">hedward</option>
-                          <option value="johnson">johnson</option>
+                          {
+                            this.getOption()
+                            
+                          // this.state?.technicianList?.length && this.state.technicianList.map(technician => 
+                          //   <option value={technician?._id}>{`${technician.firstname} ${technician.lastname}`}</option>
+                          }
                       </select> <br/><br/>
                         <button className='cmtbtn' onClick={this.handleAssignSubmit}>Assign</button> &nbsp;&nbsp;
                         <button className='cmtbtn' onClick={this.handleClose}>Close</button>

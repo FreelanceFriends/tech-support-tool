@@ -1,4 +1,4 @@
-import { GET_ALL_TICKET, LOGIN, REGISTER_USER, TICKET } from '../constants/constants';
+import { GET_ALL_TICKET, LOGIN, REGISTER_USER, TICKET, GET_TECHNICIANS_LIST } from '../constants/constants';
 import * as pageTypes from '../constants/PageActionTypes';
 import * as ticketTypes from '../constants/ticketActionTypes';
 import { DELETE, GET, POST, PUT } from './ApiActions';
@@ -95,6 +95,47 @@ export function signupuser(data, callback) {
       )
     }
 }
+
+
+export function getTechnicians() {
+  return (dispatch) => {
+    ApiExecutor(GET, GET_TECHNICIANS_LIST).then(res => {
+      if(res.status === 201 || res.status === 200) {
+        console.log(res?.data?.data)
+        dispatch({
+          type: pageTypes.GET_TECHNICIAN,
+          payload: {
+            technicians: res?.data?.data,
+            error: true,
+            errorType: "success",
+            errorMessage: "Technician Fetched Successfullly!"
+          }
+        })
+        dispatch(getTickets(TICKET));
+      }
+      else {
+        dispatch({
+          type: ticketTypes.ERROR_VALIDATION,
+          payload: {
+            error: true,
+            errorType: "warning",
+            errorMessage: "Technican Fetch failed!"
+          }
+        })
+      }
+    }).catch(err => 
+      dispatch({
+        type: ticketTypes.ERROR_VALIDATION,
+        payload: {
+          error: true,
+          errorType: "error",
+          errorMessage: err.message
+        }
+      })
+    )
+  }
+}
+
 
 // Ticket actions
 export function createTicket(data) {
