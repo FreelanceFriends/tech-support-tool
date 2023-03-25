@@ -92,20 +92,28 @@ class Dashboardcomp extends Component {
         <AppBar position="static" color="default" >
             <Tabs value={this.state.value_menu} onChange={this.handleChangeSubTab}>
            { this.props.user.userRole ==="USER" && <Tab label="Create" />}
+           { this.props.user.userRole ==="ADMIN" && <Tab label="Register" />}
                 <Tab label="New" />
                 <Tab label="Open" />
                 <Tab label="Closed" />
             </Tabs>
         </AppBar>
-        {this.props.user.userRole === "USER" ?
-        (<>{(this.state.value_menu ===0) && <Creatnewticketform/>}
+        {this.props.user.userRole === "USER" &&
+        (<>{(this.state.value_menu ===0) && <Creatnewticketform status={"create"}/>}
         {this.state.value_menu ===1 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"new"}/>}
         {this.state.value_menu ===2 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"open"}/>}
-        {this.state.value_menu ===3 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"closed"}/>}</>):
+        {this.state.value_menu ===3 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"closed"}/>}</>)}
         
+        {this.props.user.userRole === "TECHNICIAN" &&
         (<>{this.state.value_menu ===0 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"new"}/>}
         {this.state.value_menu ===1 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"open"}/>}
         {this.state.value_menu ===2 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"closed"}/>}</>)
+        }
+        {this.props.user.userRole === "ADMIN" &&
+        (<>{this.state.value_menu ===0 && <Creatnewticketform status={"register"}/>}
+        {this.state.value_menu ===1 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"new"}/>}
+        {this.state.value_menu ===2 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"open"}/>}
+        {this.state.value_menu ===3 && <DisplayTickets tickets={this.props?.ticket.tickets} status={"closed"}/>}</>)
         }
         <div className='footer'>© 2023 copyright by Help Desk Team</div>
         <Snackbar open={this.state.alertOpen} autoHideDuration={2000} onClose={this.handleAlertClose} anchorOrigin={{ vertical: 'top', horizontal: "center" }} style={{ top: '87px', right: '16px' }}>

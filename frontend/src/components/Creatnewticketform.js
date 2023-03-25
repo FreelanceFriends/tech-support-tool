@@ -5,7 +5,8 @@ import * as AllActions from '../api/api';
 import { bindActionCreators } from 'redux';
 import '../css/Createticket.css'
 import { connect } from 'react-redux';
-export class Creatnewticketform extends Component {
+import { useNavigate } from 'react-router-dom';
+export class CreatnewticketformComp extends Component {
     constructor(props) {
       super(props)
     
@@ -15,11 +16,17 @@ export class Creatnewticketform extends Component {
          title: '',
          alertOpen: false,
          errorMsg: "",
-         alertType: "info"
+         alertType: "info",
+         firstname:'',
+         lastname:'',
+         email:'',
+         password:'',
+         role:'User',
       }
     }
 
     componentDidUpdate(prevProps, prevState) {
+
       if(prevProps.ticket !== this.props.ticket) {
         console.log(this.props.ticket)
         this.setState({
@@ -31,9 +38,10 @@ export class Creatnewticketform extends Component {
       }
     }
 
-    // componentDidMount =() =>{
-    //   this.props.actions.getTickets(GET_ALL_TICKET)
-    // }
+    componentDidMount =() =>{
+      // this.props.actions.getTickets(GET_ALL_TICKET)
+      console.log("Sate ", this.state)
+    }
 
     handleTextValueChange = (e) => {
         this.setState({
@@ -43,8 +51,19 @@ export class Creatnewticketform extends Component {
 
       handleSubmit = (e) =>{
         e.preventDefault();
-        console.log("Create ticket submit state value ", this.state);
+        if(this.props.status ==="create"){
         this.props.actions.createTicket({title: this.state.title, description: this.state.description, severity: this.state?.severity?.toLocaleUpperCase})
+        }
+        else{
+        this?.props?.actions?.signupuser({...this.state}, () => this.props.navigate("/", {replace: true}))
+        this.setState({
+          firstname:'',
+         lastname:'',
+         email:'',
+         password:'',
+         role:'User',
+        })
+        }
 
       }
 
@@ -55,7 +74,8 @@ export class Creatnewticketform extends Component {
   render() {
     return (
         <>
-        <div className='ticket-header'><strong>Create New Ticket</strong></div>
+       {this.props.status ==="create" && <>
+       <div className='ticket-header'><strong>Create New Ticket</strong></div>
         <div className='ticket-border'>
             <form className='' onSubmit={this.handleSubmit}>
                 <div className='from-display'>
@@ -78,7 +98,40 @@ export class Creatnewticketform extends Component {
                 <button className='ticketbtn'>Create Ticket</button>
                 </div>
             </form>
-        </div>
+        </div></>}
+
+        {this.props.status ==="register" && <>
+       <div className='ticket-header'><strong>Register</strong></div>
+        <div className='ticket-border'>
+            <form className='' onSubmit={this.handleSubmit}>
+                <div className='from-display'>
+                <div className=''>
+                <label className="ticket-lablel"><strong>First Name</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="text"  name='firstname' value={this.state.firstname} onChange={this.handleTextValueChange} />
+                </div>
+                <div>
+                <label className="ticket-lablel"><strong>Last Name</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="text"  name='lastname' value={this.state.lastname} onChange={this.handleTextValueChange} />
+                </div>
+                <div>
+                <label className="ticket-lablel"><strong>Email</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="text"  name='email' value={this.state.email} onChange={this.handleTextValueChange} />
+                </div>
+                <div>
+                <label className="ticket-lablel"><strong>Password</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="password"  name='password' value={this.state.password} onChange={this.handleTextValueChange} />
+                </div>
+                <div>
+                <label className="ticket-lablel"><strong>Role</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <select name='role' value={this.state.role} onChange={this.handleTextValueChange}>
+                    <option value="USER">User</option>
+                    <option value="TECHNICIAN">Technician</option>
+                </select>
+                </div>
+                <button className='ticketbtn'>Register</button>
+                </div>
+            </form>
+        </div></>}
         <Snackbar open={this.state.alertOpen} autoHideDuration={2000} onClose={this.handleAlertClose} anchorOrigin={{ vertical: 'top', horizontal: "center" }} style={{ top: '87px', right: '16px' }}>
         <Alert onClose={this.handleAlertClose} severity={this.state.alertType}>
             {this.state.errorMsg}
@@ -100,5 +153,12 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(AllActions, dispatch)
 });
+
+const Creatnewticketform = (props) => {
+  const navigate = useNavigate()
+  
+
+  return <CreatnewticketformComp  {...props} navigate = {navigate}/>
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Creatnewticketform);
