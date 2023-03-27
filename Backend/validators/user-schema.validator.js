@@ -12,10 +12,9 @@ const userSchema = Joi.object({
     
     password: Joi.string()
         .min(8)
-        .max(32)
-        .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+        .max(32),
     
-    email: Joi.string().email(),
+    email: Joi.string(),
        
     role: Joi.string().min(4).max(5)
         .valid(userRoles.user, userRoles.admin, userRoles.technician)
